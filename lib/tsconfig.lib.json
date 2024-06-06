@@ -1,15 +1,11 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../packages/email-connector"
+    "outDir": "../package/"
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
     "node_modules",
-    "dist",
     "test",
     "**/*spec.ts"
   ]

@@ -6,7 +6,7 @@ import { ClientSecretCredential } from '@azure/identity';
 import {
   GRAPH_MS_OPTIONS,
   GraphMSOptions,
-} from 'lib/interfaces/email-connector-options.interfaces';
+} from '../interfaces/email-connector-options.interfaces';
 
 @Injectable()
 export class EmailConnectorGraphMsService {

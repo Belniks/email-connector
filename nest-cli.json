@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true
@@ -9,12 +8,13 @@
   "projects": {
     "email-connector": {
       "type": "library",
-      "root": "libs/email-connector",
+      "root": "lib/",
       "entryFile": "index",
-      "sourceRoot": "libs/email-connector/src",
+      "sourceRoot": "lib/",
       "compilerOptions": {
-        "tsConfigPath": "libs/email-connector/tsconfig.lib.json"
+        "tsConfigPath": "./lib/tsconfig.lib.json"
       }
     }
   }
 }
+

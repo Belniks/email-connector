@@ -5,8 +5,13 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "files": [
+    "package",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
-    "build": "nest build",
+    "build": "rimraf packages && concurrently \"tsc -p ./lib/tsconfig.lib.json\"",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -20,13 +25,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@azure/identity": "4.2.0",
+    "@microsoft/microsoft-graph-client": "3.0.7",
     "@nestjs/common": "10.3.9",
     "@nestjs/core": "10.3.9",
     "@nestjs/platform-express": "10.3.9",
+    "concurrently": "^8.2.2",
     "reflect-metadata": "0.2.2",
-    "rxjs": "7.8.1",
-    "@azure/identity": "4.2.0",
-    "@microsoft/microsoft-graph-client": "3.0.7"
+    "rxjs": "7.8.1"
   },
   "devDependencies": {
     "@nestjs/cli": "10.3.2",

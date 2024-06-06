@@ -1,17 +1,20 @@
 {
   "name": "@nestjs/email-connector",
   "version": "0.0.2",
-  "description": "",
-  "author": "",
+  "description": "A package to connect and fetch emails from Microsoft and Gmail. Streamline your email integration with secure credential access",
+  "author": "belnicks <>",
   "private": true,
   "license": "UNLICENSED",
   "files": [
     "package",
     "package.json",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "index.js",
+    "index.d.ts"
   ],
   "scripts": {
-    "build": "rimraf packages && concurrently \"tsc -p ./lib/tsconfig.lib.json\"",
+    "build": "rimraf dist && concurrently \"tsc -p ./tsconfig.build.json\"",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

@@ -23,6 +23,16 @@
       "@app/email-connector/*": [
         "lib/*"
       ]
-    }
-  }
+    },
+    "outDir": "../package/",
+  },
+  "include": [
+    "lib/**/*",
+    "../index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "test",
+    "**/*spec.ts"
+  ]
 }

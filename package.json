@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "files": [
-    "package",
+    "dist",
     "package.json",
     "README.md",
     "LICENSE",

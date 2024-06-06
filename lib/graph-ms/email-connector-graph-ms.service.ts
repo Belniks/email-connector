@@ -10,11 +10,11 @@ import {
 
 @Injectable()
 export class EmailConnectorGraphMsService {
+  private readonly client: Client;
+
   constructor(
     @Inject(GRAPH_MS_OPTIONS)
     private readonly options: GraphMSOptions,
-
-    private readonly client: Client,
   ) {
     const credential = new ClientSecretCredential(
       this.options.tenantId,

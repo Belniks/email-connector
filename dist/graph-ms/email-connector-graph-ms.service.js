@@ -18,9 +18,8 @@ const microsoft_graph_client_1 = require("@microsoft/microsoft-graph-client");
 const identity_1 = require("@azure/identity");
 const email_connector_options_interfaces_1 = require("../interfaces/email-connector-options.interfaces");
 let EmailConnectorGraphMsService = class EmailConnectorGraphMsService {
-    constructor(options, client) {
+    constructor(options) {
         this.options = options;
-        this.client = client;
         const credential = new identity_1.ClientSecretCredential(this.options.tenantId, this.options.clientId, this.options.clientSecret);
         this.client = microsoft_graph_client_1.Client.initWithMiddleware({
             authProvider: {
@@ -64,5 +63,5 @@ exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService;
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(email_connector_options_interfaces_1.GRAPH_MS_OPTIONS)),
-    __metadata("design:paramtypes", [Object, microsoft_graph_client_1.Client])
+    __metadata("design:paramtypes", [Object])
 ], EmailConnectorGraphMsService);

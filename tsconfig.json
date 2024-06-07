@@ -17,12 +17,9 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/email-connector": [
-        "lib/"
-      ],
-      "@app/email-connector/*": [
+      "@/*": [
         "lib/*"
-      ]
+      ],
     },
     "outDir": "../package/",
   },

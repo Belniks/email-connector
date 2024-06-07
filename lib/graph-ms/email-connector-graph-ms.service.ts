@@ -16,6 +16,18 @@ export class EmailConnectorGraphMsService {
     @Inject(GRAPH_MS_OPTIONS)
     private readonly options: GraphMSOptions,
   ) {
+    if (!this.options.clientId) {
+      throw new Error('Missing required clientId');
+    }
+
+    if (!this.options.clientSecret) {
+      throw new Error('Missing required clientSecret');
+    }
+
+    if (!this.options.tenantId) {
+      throw new Error('Missing required tenantId');
+    }
+
     const credential = new ClientSecretCredential(
       this.options.tenantId,
       this.options.clientId,

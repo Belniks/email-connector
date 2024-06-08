@@ -11,21 +11,29 @@ export const MessageMapper = {
       subject: message.subject ?? 'No Subject',
       body: BodyMessageMapper.fromGraph(message.body),
       from: RecipientMapper.fromGraph(message.from),
-      bccRecipients: RecipientMapper.fromGraphArray(message.bccRecipients),
-      ccRecipients: RecipientMapper.fromGraphArray(message.ccRecipients),
+      bccRecipients: message.bccRecipients
+        ? RecipientMapper.fromGraphArray(message.bccRecipients)
+        : [],
+      ccRecipients: message.ccRecipients
+        ? RecipientMapper.fromGraphArray(message.ccRecipients)
+        : [],
       importance: message.importance,
       isRead: message.isRead,
       isReadReceiptRequested: message.isReadReceiptRequested,
       isDeliveryReceiptRequested: message.isDeliveryReceiptRequested,
       internetMessageId: message.internetMessageId,
       inferenceClassification: message.inferenceClassification,
-      internetMessageHeaders: InternetMessageHeadersMapper.fromGraphArray(
-        message.internetMessageHeaders,
-      ),
+      internetMessageHeaders: message.internetMessageHeaders
+        ? InternetMessageHeadersMapper.fromGraphArray(
+            message.internetMessageHeaders,
+          )
+        : [],
       lastModifiedDateTime: new Date(message.lastModifiedDateTime),
       parentFolderId: message.parentFolderId,
       receivedDateTime: new Date(message.receivedDateTime),
-      replyTo: RecipientMapper.fromGraphArray(message.replyTo),
+      replyTo: message.replyTo
+        ? RecipientMapper.fromGraphArray(message.replyTo)
+        : [],
       sender: RecipientMapper.fromGraph(message.sender),
       sentDateTime: new Date(message.sentDateTime),
       // attachments: message.attachments,

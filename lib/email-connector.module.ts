@@ -45,14 +45,17 @@ export class EmailConnectorModule {
   private static createAsyncProviders(
     options: EmailConnectorAsyncOptions,
   ): Provider[] {
+    const services = [EmailConnectorGraphMsService];
+
     if (options.useFactory) {
       return [
+        ...services,
         this.createGraphAsyncOptionsProvider(options),
         this.createGmailAsyncOptionsProvider(options),
       ];
     }
 
-    return [];
+    return services;
   }
 
   private static createGraphAsyncOptionsProvider(

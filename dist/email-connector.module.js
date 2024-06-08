@@ -40,13 +40,15 @@ let EmailConnectorModule = EmailConnectorModule_1 = class EmailConnectorModule {
         };
     }
     static createAsyncProviders(options) {
+        const services = [email_connector_graph_ms_service_1.EmailConnectorGraphMsService];
         if (options.useFactory) {
             return [
+                ...services,
                 this.createGraphAsyncOptionsProvider(options),
                 this.createGmailAsyncOptionsProvider(options),
             ];
         }
-        return [];
+        return services;
     }
     static createGraphAsyncOptionsProvider(options) {
         return {

@@ -9,7 +9,7 @@ export declare class EmailConnectorGraphMsService {
     constructor(options: EmailConnectorOptions);
     getMessagesByEmail({ email, options, }: {
         email: string;
-        options: GetOptions;
+        options?: GetOptions;
     }): Promise<Message[]>;
     getMessageByEmailWithId({ email, id, }: {
         email: string;

@@ -59,9 +59,6 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
         try {
             const messages = await this.client
                 .api(`/users/${email}/messages`)
-                .filter(filter)
-                .orderby(orderBy)
-                .select(select)
                 .top(top)
                 .skip(skip)
                 .get();

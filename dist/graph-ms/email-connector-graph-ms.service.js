@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var EmailConnectorGraphMsService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailConnectorGraphMsService = void 0;
 const common_1 = require("@nestjs/common");
@@ -19,10 +20,10 @@ const identity_1 = require("@azure/identity");
 const email_connector_options_interfaces_1 = require("../interfaces/email-connector-options.interfaces");
 const message_mapper_1 = require("./mappers/message.mapper");
 const attachment_mapper_1 = require("./mappers/attachment.mapper");
-let EmailConnectorGraphMsService = class EmailConnectorGraphMsService {
-    constructor(options, logger) {
+let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailConnectorGraphMsService {
+    constructor(options) {
         this.options = options;
-        this.logger = logger;
+        this.logger = new common_1.Logger(EmailConnectorGraphMsService_1.name);
         if (!this.options.clientId) {
             this.logger.error('Missing required clientId');
             throw new Error('Missing required clientId');
@@ -116,8 +117,8 @@ let EmailConnectorGraphMsService = class EmailConnectorGraphMsService {
     }
 };
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService;
-exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService = __decorate([
+exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(email_connector_options_interfaces_1.GRAPH_MS_OPTIONS)),
-    __metadata("design:paramtypes", [Object, common_1.Logger])
+    __metadata("design:paramtypes", [Object])
 ], EmailConnectorGraphMsService);

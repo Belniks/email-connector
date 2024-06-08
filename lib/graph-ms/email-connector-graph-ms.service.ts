@@ -16,12 +16,13 @@ import { Attachment } from './interfaces/attachment.interface';
 @Injectable()
 export class EmailConnectorGraphMsService {
   private readonly client: Client;
+  private readonly logger: Logger = new Logger(
+    EmailConnectorGraphMsService.name,
+  );
 
   constructor(
     @Inject(GRAPH_MS_OPTIONS)
     private readonly options: GraphMSOptions,
-
-    private readonly logger: Logger,
   ) {
     if (!this.options.clientId) {
       this.logger.error('Missing required clientId');

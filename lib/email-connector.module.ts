@@ -1,5 +1,6 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import {
+  EmailConnectorAsyncOptions,
   EmailConnectorOptions,
   GMAIL_OPTIONS,
   GRAPH_MS_OPTIONS,
@@ -27,6 +28,50 @@ export class EmailConnectorModule {
       module: EmailConnectorModule,
       providers: [graphProvider, gmailProvider, EmailConnectorGraphMsService],
       exports: [EmailConnectorGraphMsService],
+    };
+  }
+
+  static forRootAsync(options: EmailConnectorAsyncOptions): DynamicModule {
+    const providers = this.createAsyncProviders(options);
+
+    return {
+      module: EmailConnectorModule,
+      imports: options.imports,
+      providers: providers,
+      exports: [EmailConnectorGraphMsService],
+    };
+  }
+
+  private static createAsyncProviders(
+    options: EmailConnectorAsyncOptions,
+  ): Provider[] {
+    if (options.useFactory) {
+      return [
+        this.createGraphAsyncOptionsProvider(options),
+        this.createGmailAsyncOptionsProvider(options),
+      ];
+    }
+
+    return [];
+  }
+
+  private static createGraphAsyncOptionsProvider(
+    options: EmailConnectorAsyncOptions,
+  ): Provider {
+    return {
+      provide: GRAPH_MS_OPTIONS,
+      useFactory: options.useFactory,
+      inject: options.inject || [],
+    };
+  }
+
+  private static createGmailAsyncOptionsProvider(
+    options: EmailConnectorAsyncOptions,
+  ): Provider {
+    return {
+      provide: GMAIL_OPTIONS,
+      useFactory: options.useFactory,
+      inject: options.inject || [],
     };
   }
 }

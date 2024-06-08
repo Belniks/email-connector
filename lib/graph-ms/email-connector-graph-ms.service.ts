@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import { Client, GraphClientError } from '@microsoft/microsoft-graph-client';
 import { ClientSecretCredential } from '@azure/identity';
@@ -7,6 +7,11 @@ import {
   GRAPH_MS_OPTIONS,
   GraphMSOptions,
 } from '../interfaces/email-connector-options.interfaces';
+import { Message } from './interfaces';
+import { GetOptions } from './interfaces/options/get-options.inteface';
+import { MessageMapper } from './mappers/message.mapper';
+import { AttachmentMapper } from './mappers/attachment.mapper';
+import { Attachment } from './interfaces/attachment.interface';
 
 @Injectable()
 export class EmailConnectorGraphMsService {
@@ -15,16 +20,21 @@ export class EmailConnectorGraphMsService {
   constructor(
     @Inject(GRAPH_MS_OPTIONS)
     private readonly options: GraphMSOptions,
+
+    private readonly logger: Logger,
   ) {
     if (!this.options.clientId) {
+      this.logger.error('Missing required clientId');
       throw new Error('Missing required clientId');
     }
 
     if (!this.options.clientSecret) {
+      this.logger.error('Missing required clientSecret');
       throw new Error('Missing required clientSecret');
     }
 
     if (!this.options.tenantId) {
+      this.logger.error('Missing required tenantId');
       throw new Error('Missing required tenantId');
     }
 
@@ -43,35 +53,109 @@ export class EmailConnectorGraphMsService {
             ]);
             return tokenResponse.token;
           } catch (error) {
-            throw error;
+            this.logger.error('Error getting access token:', error);
           }
         },
       },
     });
   }
 
-  async getEmailsByEmail(email: string): Promise<void> {
+  async getMessagesByEmail({
+    email,
+    options,
+  }: {
+    email: string;
+    options: GetOptions;
+  }): Promise<Message[]> {
+    const { filter, orderBy, select, skip = 1, top = 10 } = options;
+
     try {
       const messages = await this.client
         .api(`/users/${email}/messages`)
-        .select('subject,from,receivedDateTime')
-        .top(10)
+        .filter(filter)
+        .orderby(orderBy)
+        .select(select)
+        .top(top)
+        .skip(skip)
         .get();
 
-      messages.value.forEach((message: any, index: any) => {
-        console.log(`${index + 1}. Subject: ${message.subject}`);
-        console.log(
-          `   From: ${message.from.emailAddress.name} <${message.from.emailAddress.address}>`,
-        );
-        console.log(`   Received: ${message.receivedDateTime}`);
-        console.log('-----------------------------------------');
-      });
+      return MessageMapper.fromGraphArray(messages.value);
     } catch (error) {
       if (!(error instanceof GraphClientError)) {
         throw error;
       }
 
-      console.error('Error fetching emails:', error);
+      this.logger.error('Error fetching emails:', error);
+    }
+  }
+
+  async getMessageByEmailWithId({
+    email,
+    id,
+  }: {
+    email: string;
+    id: string;
+  }): Promise<Message> {
+    try {
+      const message = await this.client
+        .api(`/users/${email}/messages/${id}`)
+        .get();
+
+      return MessageMapper.fromGraph(message);
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error fetching email:', error);
+    }
+  }
+
+  async getListAttachmentsByEmailWithId({
+    email,
+    id,
+  }: {
+    email: string;
+    id: string;
+  }): Promise<Attachment[]> {
+    try {
+      const attachments = await this.client
+        .api(`/users/${email}/messages/${id}/attachments`)
+        .get();
+
+      return AttachmentMapper.fromGraphArray(attachments.value);
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error fetching attachments:', error);
+    }
+  }
+
+  async getAttachmentByEmailWithId({
+    email,
+    messageId,
+    attachmentId,
+  }: {
+    email: string;
+    messageId: string;
+    attachmentId: string;
+  }): Promise<Attachment> {
+    try {
+      const attachment = await this.client
+        .api(
+          `/users/${email}/messages/${messageId}/attachments/${attachmentId}`,
+        )
+        .get();
+
+      return AttachmentMapper.fromGraph(attachment);
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error fetching attachment:', error);
     }
   }
 }

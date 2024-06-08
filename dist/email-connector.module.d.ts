@@ -4,6 +4,5 @@ export declare class EmailConnectorModule {
     static forRoot(options: EmailConnectorOptions): DynamicModule;
     static forRootAsync(options: EmailConnectorAsyncOptions): DynamicModule;
     private static createAsyncProviders;
-    private static createGraphAsyncOptionsProvider;
-    private static createGmailAsyncOptionsProvider;
+    private static createAsyncOptionsProvider;
 }

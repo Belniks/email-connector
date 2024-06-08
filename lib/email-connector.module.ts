@@ -2,8 +2,7 @@ import { DynamicModule, Module, Provider } from '@nestjs/common';
 import {
   EmailConnectorAsyncOptions,
   EmailConnectorOptions,
-  GMAIL_OPTIONS,
-  GRAPH_MS_OPTIONS,
+  EMAIL_CONNECTOR_OPTIONS,
 } from './interfaces/email-connector-options.interfaces';
 import { EmailConnectorGraphMsService } from './graph-ms/email-connector-graph-ms.service';
 
@@ -14,19 +13,14 @@ export class EmailConnectorModule {
       throw new Error('You must provide at least one email provider');
     }
 
-    const graphProvider: Provider = {
-      provide: GRAPH_MS_OPTIONS,
-      useValue: options.graphMS,
-    };
-
-    const gmailProvider: Provider = {
-      provide: GMAIL_OPTIONS,
-      useValue: options.gmail,
+    const optionProviders: Provider = {
+      provide: EMAIL_CONNECTOR_OPTIONS,
+      useValue: options,
     };
 
     return {
       module: EmailConnectorModule,
-      providers: [graphProvider, gmailProvider, EmailConnectorGraphMsService],
+      providers: [optionProviders, EmailConnectorGraphMsService],
       exports: [EmailConnectorGraphMsService],
     };
   }
@@ -36,7 +30,7 @@ export class EmailConnectorModule {
 
     return {
       module: EmailConnectorModule,
-      imports: options.imports,
+      imports: options.imports || [],
       providers: providers,
       exports: [EmailConnectorGraphMsService],
     };
@@ -45,34 +39,20 @@ export class EmailConnectorModule {
   private static createAsyncProviders(
     options: EmailConnectorAsyncOptions,
   ): Provider[] {
-    const services = [EmailConnectorGraphMsService];
+    const providers = [EmailConnectorGraphMsService];
 
     if (options.useFactory) {
-      return [
-        ...services,
-        this.createGraphAsyncOptionsProvider(options),
-        this.createGmailAsyncOptionsProvider(options),
-      ];
+      return [...providers, this.createAsyncOptionsProvider(options)];
     }
 
-    return services;
+    return providers;
   }
 
-  private static createGraphAsyncOptionsProvider(
+  private static createAsyncOptionsProvider(
     options: EmailConnectorAsyncOptions,
   ): Provider {
     return {
-      provide: GRAPH_MS_OPTIONS,
-      useFactory: options.useFactory,
-      inject: options.inject || [],
-    };
-  }
-
-  private static createGmailAsyncOptionsProvider(
-    options: EmailConnectorAsyncOptions,
-  ): Provider {
-    return {
-      provide: GMAIL_OPTIONS,
+      provide: EMAIL_CONNECTOR_OPTIONS,
       useFactory: options.useFactory,
       inject: options.inject || [],
     };

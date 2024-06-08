@@ -1,4 +1,4 @@
-import { GraphMSOptions } from '../interfaces/email-connector-options.interfaces';
+import { EmailConnectorOptions } from '../interfaces/email-connector-options.interfaces';
 import { Message } from './interfaces';
 import { GetOptions } from './interfaces/options/get-options.inteface';
 import { Attachment } from './interfaces/attachment.interface';
@@ -6,7 +6,7 @@ export declare class EmailConnectorGraphMsService {
     private readonly options;
     private readonly client;
     private readonly logger;
-    constructor(options: GraphMSOptions);
+    constructor(options: EmailConnectorOptions);
     getMessagesByEmail({ email, options, }: {
         email: string;
         options: GetOptions;

@@ -16,17 +16,13 @@ let EmailConnectorModule = EmailConnectorModule_1 = class EmailConnectorModule {
         if (options.gmail === undefined && options.graphMS === undefined) {
             throw new Error('You must provide at least one email provider');
         }
-        const graphProvider = {
-            provide: email_connector_options_interfaces_1.GRAPH_MS_OPTIONS,
-            useValue: options.graphMS,
-        };
-        const gmailProvider = {
-            provide: email_connector_options_interfaces_1.GMAIL_OPTIONS,
-            useValue: options.gmail,
+        const optionProviders = {
+            provide: email_connector_options_interfaces_1.EMAIL_CONNECTOR_OPTIONS,
+            useValue: options,
         };
         return {
             module: EmailConnectorModule_1,
-            providers: [graphProvider, gmailProvider, email_connector_graph_ms_service_1.EmailConnectorGraphMsService],
+            providers: [optionProviders, email_connector_graph_ms_service_1.EmailConnectorGraphMsService],
             exports: [email_connector_graph_ms_service_1.EmailConnectorGraphMsService],
         };
     }
@@ -34,32 +30,21 @@ let EmailConnectorModule = EmailConnectorModule_1 = class EmailConnectorModule {
         const providers = this.createAsyncProviders(options);
         return {
             module: EmailConnectorModule_1,
-            imports: options.imports,
+            imports: options.imports || [],
             providers: providers,
             exports: [email_connector_graph_ms_service_1.EmailConnectorGraphMsService],
         };
     }
     static createAsyncProviders(options) {
-        const services = [email_connector_graph_ms_service_1.EmailConnectorGraphMsService];
+        const providers = [email_connector_graph_ms_service_1.EmailConnectorGraphMsService];
         if (options.useFactory) {
-            return [
-                ...services,
-                this.createGraphAsyncOptionsProvider(options),
-                this.createGmailAsyncOptionsProvider(options),
-            ];
+            return [...providers, this.createAsyncOptionsProvider(options)];
         }
-        return services;
+        return providers;
     }
-    static createGraphAsyncOptionsProvider(options) {
+    static createAsyncOptionsProvider(options) {
         return {
-            provide: email_connector_options_interfaces_1.GRAPH_MS_OPTIONS,
-            useFactory: options.useFactory,
-            inject: options.inject || [],
-        };
-    }
-    static createGmailAsyncOptionsProvider(options) {
-        return {
-            provide: email_connector_options_interfaces_1.GMAIL_OPTIONS,
+            provide: email_connector_options_interfaces_1.EMAIL_CONNECTOR_OPTIONS,
             useFactory: options.useFactory,
             inject: options.inject || [],
         };

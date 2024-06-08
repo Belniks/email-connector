@@ -24,19 +24,20 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
     constructor(options) {
         this.options = options;
         this.logger = new common_1.Logger(EmailConnectorGraphMsService_1.name);
-        if (!this.options.clientId) {
+        const graphMSOptions = this.options.graphMS;
+        if (!graphMSOptions.clientId) {
             this.logger.error('Missing required clientId');
             throw new Error('Missing required clientId');
         }
-        if (!this.options.clientSecret) {
+        if (!graphMSOptions.clientSecret) {
             this.logger.error('Missing required clientSecret');
             throw new Error('Missing required clientSecret');
         }
-        if (!this.options.tenantId) {
+        if (!graphMSOptions.tenantId) {
             this.logger.error('Missing required tenantId');
             throw new Error('Missing required tenantId');
         }
-        const credential = new identity_1.ClientSecretCredential(this.options.tenantId, this.options.clientId, this.options.clientSecret);
+        const credential = new identity_1.ClientSecretCredential(graphMSOptions.tenantId, graphMSOptions.clientId, graphMSOptions.clientSecret);
         this.client = microsoft_graph_client_1.Client.initWithMiddleware({
             authProvider: {
                 getAccessToken: async () => {
@@ -119,6 +120,6 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService;
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(email_connector_options_interfaces_1.GRAPH_MS_OPTIONS)),
+    __param(0, (0, common_1.Inject)(email_connector_options_interfaces_1.EMAIL_CONNECTOR_OPTIONS)),
     __metadata("design:paramtypes", [Object])
 ], EmailConnectorGraphMsService);

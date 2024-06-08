@@ -4,7 +4,8 @@ import { Client, GraphClientError } from '@microsoft/microsoft-graph-client';
 import { ClientSecretCredential } from '@azure/identity';
 
 import {
-  GRAPH_MS_OPTIONS,
+  EMAIL_CONNECTOR_OPTIONS,
+  EmailConnectorOptions,
   GraphMSOptions,
 } from '../interfaces/email-connector-options.interfaces';
 import { Message } from './interfaces';
@@ -21,28 +22,30 @@ export class EmailConnectorGraphMsService {
   );
 
   constructor(
-    @Inject(GRAPH_MS_OPTIONS)
-    private readonly options: GraphMSOptions,
+    @Inject(EMAIL_CONNECTOR_OPTIONS)
+    private readonly options: EmailConnectorOptions,
   ) {
-    if (!this.options.clientId) {
+    const graphMSOptions = this.options.graphMS;
+
+    if (!graphMSOptions.clientId) {
       this.logger.error('Missing required clientId');
       throw new Error('Missing required clientId');
     }
 
-    if (!this.options.clientSecret) {
+    if (!graphMSOptions.clientSecret) {
       this.logger.error('Missing required clientSecret');
       throw new Error('Missing required clientSecret');
     }
 
-    if (!this.options.tenantId) {
+    if (!graphMSOptions.tenantId) {
       this.logger.error('Missing required tenantId');
       throw new Error('Missing required tenantId');
     }
 
     const credential = new ClientSecretCredential(
-      this.options.tenantId,
-      this.options.clientId,
-      this.options.clientSecret,
+      graphMSOptions.tenantId,
+      graphMSOptions.clientId,
+      graphMSOptions.clientSecret,
     );
 
     this.client = Client.initWithMiddleware({

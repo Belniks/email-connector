@@ -69,16 +69,16 @@ export class EmailConnectorGraphMsService {
     options,
   }: {
     email: string;
-    options: GetOptions;
+    options?: GetOptions;
   }): Promise<Message[]> {
     const { filter, orderBy, select, skip = 1, top = 10 } = options;
 
     try {
       const messages = await this.client
         .api(`/users/${email}/messages`)
-        .filter(filter)
-        .orderby(orderBy)
-        .select(select)
+        // .filter(filter)
+        // .orderby(orderBy)
+        // .select(select)
         .top(top)
         .skip(skip)
         .get();

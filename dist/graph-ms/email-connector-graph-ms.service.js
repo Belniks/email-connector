@@ -17,9 +17,24 @@ const common_1 = require("@nestjs/common");
 const microsoft_graph_client_1 = require("@microsoft/microsoft-graph-client");
 const identity_1 = require("@azure/identity");
 const email_connector_options_interfaces_1 = require("../interfaces/email-connector-options.interfaces");
+const message_mapper_1 = require("./mappers/message.mapper");
+const attachment_mapper_1 = require("./mappers/attachment.mapper");
 let EmailConnectorGraphMsService = class EmailConnectorGraphMsService {
-    constructor(options) {
+    constructor(options, logger) {
         this.options = options;
+        this.logger = logger;
+        if (!this.options.clientId) {
+            this.logger.error('Missing required clientId');
+            throw new Error('Missing required clientId');
+        }
+        if (!this.options.clientSecret) {
+            this.logger.error('Missing required clientSecret');
+            throw new Error('Missing required clientSecret');
+        }
+        if (!this.options.tenantId) {
+            this.logger.error('Missing required tenantId');
+            throw new Error('Missing required tenantId');
+        }
         const credential = new identity_1.ClientSecretCredential(this.options.tenantId, this.options.clientId, this.options.clientSecret);
         this.client = microsoft_graph_client_1.Client.initWithMiddleware({
             authProvider: {
@@ -31,31 +46,72 @@ let EmailConnectorGraphMsService = class EmailConnectorGraphMsService {
                         return tokenResponse.token;
                     }
                     catch (error) {
-                        throw error;
+                        this.logger.error('Error getting access token:', error);
                     }
                 },
             },
         });
     }
-    async getEmailsByEmail(email) {
+    async getMessagesByEmail({ email, options, }) {
+        const { filter, orderBy, select, skip = 1, top = 10 } = options;
         try {
             const messages = await this.client
                 .api(`/users/${email}/messages`)
-                .select('subject,from,receivedDateTime')
-                .top(10)
+                .filter(filter)
+                .orderby(orderBy)
+                .select(select)
+                .top(top)
+                .skip(skip)
                 .get();
-            messages.value.forEach((message, index) => {
-                console.log(`${index + 1}. Subject: ${message.subject}`);
-                console.log(`   From: ${message.from.emailAddress.name} <${message.from.emailAddress.address}>`);
-                console.log(`   Received: ${message.receivedDateTime}`);
-                console.log('-----------------------------------------');
-            });
+            return message_mapper_1.MessageMapper.fromGraphArray(messages.value);
         }
         catch (error) {
             if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
                 throw error;
             }
-            console.error('Error fetching emails:', error);
+            this.logger.error('Error fetching emails:', error);
+        }
+    }
+    async getMessageByEmailWithId({ email, id, }) {
+        try {
+            const message = await this.client
+                .api(`/users/${email}/messages/${id}`)
+                .get();
+            return message_mapper_1.MessageMapper.fromGraph(message);
+        }
+        catch (error) {
+            if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
+                throw error;
+            }
+            this.logger.error('Error fetching email:', error);
+        }
+    }
+    async getListAttachmentsByEmailWithId({ email, id, }) {
+        try {
+            const attachments = await this.client
+                .api(`/users/${email}/messages/${id}/attachments`)
+                .get();
+            return attachment_mapper_1.AttachmentMapper.fromGraphArray(attachments.value);
+        }
+        catch (error) {
+            if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
+                throw error;
+            }
+            this.logger.error('Error fetching attachments:', error);
+        }
+    }
+    async getAttachmentByEmailWithId({ email, messageId, attachmentId, }) {
+        try {
+            const attachment = await this.client
+                .api(`/users/${email}/messages/${messageId}/attachments/${attachmentId}`)
+                .get();
+            return attachment_mapper_1.AttachmentMapper.fromGraph(attachment);
+        }
+        catch (error) {
+            if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
+                throw error;
+            }
+            this.logger.error('Error fetching attachment:', error);
         }
     }
 };
@@ -63,5 +119,5 @@ exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService;
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(email_connector_options_interfaces_1.GRAPH_MS_OPTIONS)),
-    __metadata("design:paramtypes", [Object])
+    __metadata("design:paramtypes", [Object, common_1.Logger])
 ], EmailConnectorGraphMsService);

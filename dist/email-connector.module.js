@@ -30,6 +30,38 @@ let EmailConnectorModule = EmailConnectorModule_1 = class EmailConnectorModule {
             exports: [email_connector_graph_ms_service_1.EmailConnectorGraphMsService],
         };
     }
+    static forRootAsync(options) {
+        const providers = this.createAsyncProviders(options);
+        return {
+            module: EmailConnectorModule_1,
+            imports: options.imports,
+            providers: providers,
+            exports: [email_connector_graph_ms_service_1.EmailConnectorGraphMsService],
+        };
+    }
+    static createAsyncProviders(options) {
+        if (options.useFactory) {
+            return [
+                this.createGraphAsyncOptionsProvider(options),
+                this.createGmailAsyncOptionsProvider(options),
+            ];
+        }
+        return [];
+    }
+    static createGraphAsyncOptionsProvider(options) {
+        return {
+            provide: email_connector_options_interfaces_1.GRAPH_MS_OPTIONS,
+            useFactory: options.useFactory,
+            inject: options.inject || [],
+        };
+    }
+    static createGmailAsyncOptionsProvider(options) {
+        return {
+            provide: email_connector_options_interfaces_1.GMAIL_OPTIONS,
+            useFactory: options.useFactory,
+            inject: options.inject || [],
+        };
+    }
 };
 exports.EmailConnectorModule = EmailConnectorModule;
 exports.EmailConnectorModule = EmailConnectorModule = EmailConnectorModule_1 = __decorate([

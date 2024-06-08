@@ -1,0 +1,37 @@
+import { BodyMessage } from './body-message.interface';
+import { Flag } from './flag.interface';
+import { Importance } from './importance.interface';
+import { InferenceClassificationType } from './inference-classification-type.interface';
+import { InternetMessageHeader } from './internet-message-header.interface';
+import { Recipient } from './recipient.interface';
+export interface Message {
+    bccRecipients: Recipient[];
+    body: BodyMessage;
+    bodyPreview: string;
+    ccRecipients: Recipient[];
+    changeKey: string;
+    conversationId: string;
+    createdDateTime: Date;
+    flag: Flag;
+    from: Recipient;
+    hasAttachments: boolean;
+    id: string;
+    importance: Importance;
+    inferenceClassification: InferenceClassificationType;
+    internetMessageHeaders: InternetMessageHeader[];
+    internetMessageId: string;
+    isDeliveryReceiptRequested: boolean;
+    isDraft: boolean;
+    isRead: boolean;
+    isReadReceiptRequested: boolean;
+    lastModifiedDateTime: Date;
+    parentFolderId: string;
+    receivedDateTime: Date;
+    replyTo: Recipient[];
+    sender: Recipient;
+    sentDateTime: Date;
+    subject: string;
+    toRecipients: Recipient[];
+    uniqueBody: BodyMessage;
+    webLink: string;
+}

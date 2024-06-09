@@ -4,6 +4,7 @@ export interface GraphMSOptions {
     clientId?: string;
     clientSecret?: string;
     tenantId?: string;
+    clientState?: string;
 }
 export interface GmailOptions {
     clientId?: string;

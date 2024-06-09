@@ -42,6 +42,11 @@ export class EmailConnectorGraphMsService {
       throw new Error('Missing required tenantId');
     }
 
+    if (!graphMSOptions.clientState) {
+      this.logger.error('Missing required clientState');
+      throw new Error('Missing required clientState');
+    }
+
     const credential = new ClientSecretCredential(
       graphMSOptions.tenantId,
       graphMSOptions.clientId,
@@ -79,6 +84,8 @@ export class EmailConnectorGraphMsService {
         expirationDateTime: new Date(
           new Date().getTime() + 60 * 60 * 1000, // 1 hour
         ).toISOString(),
+        latestSupportedTlsVersion: 'v1_2',
+        clientState: this.options.graphMS.clientState,
       });
 
       this.logger.log('Subscription created:', subscription);

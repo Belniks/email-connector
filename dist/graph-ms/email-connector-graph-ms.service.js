@@ -37,6 +37,10 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             this.logger.error('Missing required tenantId');
             throw new Error('Missing required tenantId');
         }
+        if (!graphMSOptions.clientState) {
+            this.logger.error('Missing required clientState');
+            throw new Error('Missing required clientState');
+        }
         const credential = new identity_1.ClientSecretCredential(graphMSOptions.tenantId, graphMSOptions.clientId, graphMSOptions.clientSecret);
         this.client = microsoft_graph_client_1.Client.initWithMiddleware({
             authProvider: {
@@ -61,6 +65,8 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
                 notificationUrl: notificationUrl,
                 resource: `/users/${email}/messages`,
                 expirationDateTime: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
+                latestSupportedTlsVersion: 'v1_2',
+                clientState: this.options.graphMS.clientState,
             });
             this.logger.log('Subscription created:', subscription);
             return subscription;

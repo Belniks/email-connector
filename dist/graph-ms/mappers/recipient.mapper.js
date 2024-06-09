@@ -4,6 +4,7 @@ exports.RecipientMapper = void 0;
 const email_address_mapper_1 = require("./email-address.mapper");
 exports.RecipientMapper = {
     fromGraph: (recipient) => {
+        console.log('RecipientMapper.fromGraph', recipient);
         return {
             emailAddress: email_address_mapper_1.EmailAddressMapper.fromGraph(recipient.emailAddress),
         };

@@ -93,7 +93,7 @@ export class EmailConnectorGraphMsService {
       return subscription;
     } catch (error) {
       if (!(error instanceof GraphClientError)) {
-        throw error;
+        this.logger.error('Error creating subscription:', error);
       }
 
       this.logger.error('Error creating subscription:', error);

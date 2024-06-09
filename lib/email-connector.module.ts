@@ -1,4 +1,4 @@
-import { DynamicModule, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import {
   EmailConnectorAsyncOptions,
   EmailConnectorOptions,
@@ -6,6 +6,7 @@ import {
 } from './interfaces/email-connector-options.interfaces';
 import { EmailConnectorGraphMsService } from './graph-ms/email-connector-graph-ms.service';
 
+@Global()
 @Module({})
 export class EmailConnectorModule {
   static forRoot(options: EmailConnectorOptions): DynamicModule {

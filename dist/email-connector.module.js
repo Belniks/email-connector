@@ -52,5 +52,6 @@ let EmailConnectorModule = EmailConnectorModule_1 = class EmailConnectorModule {
 };
 exports.EmailConnectorModule = EmailConnectorModule;
 exports.EmailConnectorModule = EmailConnectorModule = EmailConnectorModule_1 = __decorate([
+    (0, common_1.Global)(),
     (0, common_1.Module)({})
 ], EmailConnectorModule);

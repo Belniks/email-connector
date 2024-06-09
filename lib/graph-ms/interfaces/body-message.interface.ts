@@ -1,4 +1,4 @@
 export interface BodyMessage {
-  contentType: string;
+  contentType?: string;
   content: string;
 }

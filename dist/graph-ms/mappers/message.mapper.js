@@ -44,7 +44,9 @@ exports.MessageMapper = {
             flag: flag_mapper_1.FlagMapper.fromGraph(message.flag),
             hasAttachments: message.hasAttachments,
             toRecipients: recipient_mapper_1.RecipientMapper.fromGraphArray(message.toRecipients),
-            uniqueBody: body_message_mapper_1.BodyMessageMapper.fromGraph(message.uniqueBody),
+            uniqueBody: message.uniqueBody
+                ? body_message_mapper_1.BodyMessageMapper.fromGraph(message.uniqueBody)
+                : undefined,
         };
     },
     fromGraphArray: (messages) => {

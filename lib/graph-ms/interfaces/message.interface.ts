@@ -153,7 +153,7 @@ export interface Message {
   /**
    * The part of the body of the message that is unique to the current message. It can be in HTML or text format.
    */
-  uniqueBody: BodyMessage;
+  uniqueBody?: BodyMessage;
 
   /**
    * The URL to open the message in Outlook on the web.

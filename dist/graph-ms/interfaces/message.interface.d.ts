@@ -32,6 +32,6 @@ export interface Message {
     sentDateTime: Date;
     subject: string;
     toRecipients: Recipient[];
-    uniqueBody: BodyMessage;
+    uniqueBody?: BodyMessage;
     webLink: string;
 }

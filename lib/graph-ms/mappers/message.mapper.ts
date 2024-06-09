@@ -48,7 +48,9 @@ export const MessageMapper = {
       flag: FlagMapper.fromGraph(message.flag),
       hasAttachments: message.hasAttachments,
       toRecipients: RecipientMapper.fromGraphArray(message.toRecipients),
-      uniqueBody: BodyMessageMapper.fromGraph(message.uniqueBody),
+      uniqueBody: message.uniqueBody
+        ? BodyMessageMapper.fromGraph(message.uniqueBody)
+        : undefined,
     };
   },
   fromGraphArray: (messages: any[]): Message[] => {

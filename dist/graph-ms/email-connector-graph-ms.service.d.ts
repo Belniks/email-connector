@@ -7,6 +7,10 @@ export declare class EmailConnectorGraphMsService {
     private readonly client;
     private readonly logger;
     constructor(options: EmailConnectorOptions);
+    listenForNewEmails({ email, notificationUrl, }: {
+        email: string;
+        notificationUrl: string;
+    }): Promise<any>;
     getMessagesByEmail({ email, options, }: {
         email: string;
         options?: GetOptions;

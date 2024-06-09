@@ -64,6 +64,35 @@ export class EmailConnectorGraphMsService {
     });
   }
 
+  async listenForNewEmails({
+    email,
+    notificationUrl,
+  }: {
+    email: string;
+    notificationUrl: string;
+  }): Promise<any> {
+    try {
+      const subscription = await this.client.api('/subscriptions').post({
+        changeType: 'created',
+        notificationUrl: notificationUrl,
+        resource: `/users/${email}/messages`,
+        expirationDateTime: new Date(
+          new Date().getTime() + 60 * 60 * 1000, // 1 hour
+        ).toISOString(),
+      });
+
+      this.logger.log('Subscription created:', subscription);
+
+      return subscription;
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error creating subscription:', error);
+    }
+  }
+
   async getMessagesByEmail({
     email,
     options,

@@ -54,6 +54,24 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             },
         });
     }
+    async listenForNewEmails({ email, notificationUrl, }) {
+        try {
+            const subscription = await this.client.api('/subscriptions').post({
+                changeType: 'created',
+                notificationUrl: notificationUrl,
+                resource: `/users/${email}/messages`,
+                expirationDateTime: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
+            });
+            this.logger.log('Subscription created:', subscription);
+            return subscription;
+        }
+        catch (error) {
+            if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
+                throw error;
+            }
+            this.logger.error('Error creating subscription:', error);
+        }
+    }
     async getMessagesByEmail({ email, options, }) {
         const { filter, orderBy, select, skip = 1, top = 10 } = options;
         try {

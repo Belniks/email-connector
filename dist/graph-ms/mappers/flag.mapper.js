@@ -4,7 +4,6 @@ exports.FlagMapper = void 0;
 const date_time_time_zone_mapper_1 = require("./date-time-time-zone.mapper");
 exports.FlagMapper = {
     fromGraph: (flag) => {
-        console.log('FlagMapper.fromGraph', flag);
         return {
             completedDateTime: flag.completedDateTime
                 ? date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.completedDateTime)

@@ -3,8 +3,6 @@ import { EmailAddressMapper } from './email-address.mapper';
 
 export const RecipientMapper = {
   fromGraph: (recipient: any): Recipient => {
-    console.log('RecipientMapper.fromGraph', recipient);
-
     return {
       emailAddress: EmailAddressMapper.fromGraph(recipient.emailAddress),
     };

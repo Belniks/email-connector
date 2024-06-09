@@ -2,8 +2,6 @@ import { InternetMessageHeader } from '../interfaces/internet-message-header.int
 
 export const InternetMessageHeadersMapper = {
   fromGraph(headers: any): InternetMessageHeader {
-    console.log('InternetMessageHeadersMapper.fromGraph', headers);
-
     return {
       name: headers.name,
       value: headers.value,

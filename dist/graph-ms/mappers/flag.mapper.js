@@ -6,10 +6,16 @@ exports.FlagMapper = {
     fromGraph: (flag) => {
         console.log('FlagMapper.fromGraph', flag);
         return {
-            completedDateTime: date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.completedDateTime),
-            dueDateTime: date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.dueDateTime),
+            completedDateTime: flag.completedDateTime
+                ? date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.completedDateTime)
+                : undefined,
+            dueDateTime: flag.dueDateTime
+                ? date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.dueDateTime)
+                : undefined,
             flagStatus: flag.flagStatus,
-            startDateTime: date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.startDateTime),
+            startDateTime: flag.startDateTime
+                ? date_time_time_zone_mapper_1.DateTimeTimeZoneMapper.fromGraph(flag.startDateTime)
+                : undefined,
         };
     },
 };

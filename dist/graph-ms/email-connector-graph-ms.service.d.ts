@@ -2,6 +2,7 @@ import { EmailConnectorOptions } from '../interfaces/email-connector-options.int
 import { Message } from './interfaces';
 import { GetOptions } from './interfaces/options/get-options.inteface';
 import { Attachment } from './interfaces/attachment.interface';
+import { Subscription } from './interfaces/subscription.interface';
 export declare class EmailConnectorGraphMsService {
     private readonly options;
     private readonly client;
@@ -10,7 +11,7 @@ export declare class EmailConnectorGraphMsService {
     listenForNewEmails({ email, notificationUrl, }: {
         email: string;
         notificationUrl: string;
-    }): Promise<any>;
+    }): Promise<Subscription>;
     getMessagesByEmail({ email, options, }: {
         email: string;
         options?: GetOptions;

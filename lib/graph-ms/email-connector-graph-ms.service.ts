@@ -17,6 +17,7 @@ import { GetOptions } from './interfaces/options/get-options.inteface';
 import { MessageMapper } from './mappers/message.mapper';
 import { AttachmentMapper } from './mappers/attachment.mapper';
 import { Attachment } from './interfaces/attachment.interface';
+import { Subscription } from './interfaces/subscription.interface';
 
 @Injectable()
 export class EmailConnectorGraphMsService {
@@ -79,9 +80,9 @@ export class EmailConnectorGraphMsService {
   }: {
     email: string;
     notificationUrl: string;
-  }): Promise<any> {
+  }): Promise<Subscription> {
     try {
-      const subscription = await this.client.api('/subscriptions').post({
+      const subscription = (await this.client.api('/subscriptions').post({
         changeType: 'created',
         notificationUrl: notificationUrl,
         resource: `/users/${email}/messages`,
@@ -90,9 +91,9 @@ export class EmailConnectorGraphMsService {
         ).toISOString(),
         latestSupportedTlsVersion: 'v1_2',
         clientState: this.options.graphMS.clientState,
-      });
+      })) as Subscription;
 
-      this.logger.log('Subscription created:', subscription);
+      this.logger.log('Subscription created:', subscription.id);
 
       return subscription;
     } catch (error) {

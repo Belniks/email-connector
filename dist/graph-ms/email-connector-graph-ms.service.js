@@ -72,9 +72,6 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             return subscription;
         }
         catch (error) {
-            if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
-                this.logger.error('Error creating subscription:', error);
-            }
             this.logger.error('Error creating subscription:', error);
         }
     }

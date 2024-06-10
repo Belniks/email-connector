@@ -1,6 +1,10 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 
-import { Client, GraphClientError } from '@microsoft/microsoft-graph-client';
+import {
+  Client,
+  GraphClientError,
+  GraphError,
+} from '@microsoft/microsoft-graph-client';
 import { ClientSecretCredential } from '@azure/identity';
 
 import {
@@ -92,10 +96,6 @@ export class EmailConnectorGraphMsService {
 
       return subscription;
     } catch (error) {
-      if (!(error instanceof GraphClientError)) {
-        this.logger.error('Error creating subscription:', error);
-      }
-
       this.logger.error('Error creating subscription:', error);
     }
   }

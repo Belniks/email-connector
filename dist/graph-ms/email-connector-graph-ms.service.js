@@ -68,11 +68,11 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
                 latestSupportedTlsVersion: 'v1_2',
                 clientState: this.options.graphMS.clientState,
             }));
-            this.logger.log('Subscription created:', subscription.id);
+            this.logger.log(`Subscription created: ${subscription.id}`);
             return subscription;
         }
         catch (error) {
-            this.logger.error('Error creating subscription:', error);
+            this.logger.error(`Error creating subscription: ${error}`);
         }
     }
     async getMessagesByEmail({ email, options, }) {

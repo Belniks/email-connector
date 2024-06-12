@@ -93,11 +93,11 @@ export class EmailConnectorGraphMsService {
         clientState: this.options.graphMS.clientState,
       })) as Subscription;
 
-      this.logger.log('Subscription created:', subscription.id);
+      this.logger.log(`Subscription created: ${subscription.id}`);
 
       return subscription;
     } catch (error) {
-      this.logger.error('Error creating subscription:', error);
+      this.logger.error(`Error creating subscription: ${error}`);
     }
   }
 

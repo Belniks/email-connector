@@ -14,7 +14,7 @@ export declare class EmailConnectorGraphMsService {
     }): Promise<Subscription>;
     updateSubscription({ subscriptionId, expirationDateTime, }: {
         subscriptionId: string;
-        expirationDateTime: string;
+        expirationDateTime: Date;
     }): Promise<Subscription>;
     getMessagesByEmail({ email, options, }: {
         email: string;

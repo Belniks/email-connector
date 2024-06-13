@@ -80,7 +80,7 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             const subscription = (await this.client
                 .api(`/subscriptions/${subscriptionId}`)
                 .patch({
-                expirationDateTime,
+                expirationDateTime: expirationDateTime.toISOString(),
             }));
             this.logger.log(`Subscription updated: ${subscription.id}`);
             return subscription;

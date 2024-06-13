@@ -93,11 +93,37 @@ export class EmailConnectorGraphMsService {
         clientState: this.options.graphMS.clientState,
       })) as Subscription;
 
+      // TODO: Add a mapper for the subscription
+
       this.logger.log(`Subscription created: ${subscription.id}`);
 
       return subscription;
     } catch (error) {
       this.logger.error(`Error creating subscription: ${error}`);
+    }
+  }
+
+  async updateSubscription({
+    subscriptionId,
+    expirationDateTime,
+  }: {
+    subscriptionId: string;
+    expirationDateTime: Date;
+  }): Promise<Subscription> {
+    try {
+      const subscription = (await this.client
+        .api(`/subscriptions/${subscriptionId}`)
+        .patch({
+          expirationDateTime: expirationDateTime.toISOString(),
+        })) as Subscription;
+
+      // TODO: Add a mapper for the subscription
+
+      this.logger.log(`Subscription updated: ${subscription.id}`);
+
+      return subscription;
+    } catch (error) {
+      this.logger.error(`Error updating subscription: ${error}`);
     }
   }
 

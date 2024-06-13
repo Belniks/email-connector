@@ -75,6 +75,20 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             this.logger.error(`Error creating subscription: ${error}`);
         }
     }
+    async updateSubscription({ subscriptionId, expirationDateTime, }) {
+        try {
+            const subscription = (await this.client
+                .api(`/subscriptions/${subscriptionId}`)
+                .patch({
+                expirationDateTime,
+            }));
+            this.logger.log(`Subscription updated: ${subscription.id}`);
+            return subscription;
+        }
+        catch (error) {
+            this.logger.error(`Error updating subscription: ${error}`);
+        }
+    }
     async getMessagesByEmail({ email, options, }) {
         const { filter, orderBy, select, skip = 1, top = 10 } = options;
         try {

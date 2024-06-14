@@ -8,9 +8,10 @@ export declare class EmailConnectorGraphMsService {
     private readonly client;
     private readonly logger;
     constructor(options: EmailConnectorOptions);
-    listenForNewEmails({ email, notificationUrl, }: {
+    listenForNewEmails({ email, notificationUrl, expirationDateTime, }: {
         email: string;
         notificationUrl: string;
+        expirationDateTime?: Date;
     }): Promise<Subscription>;
     updateSubscription({ subscriptionId, expirationDateTime, }: {
         subscriptionId: string;

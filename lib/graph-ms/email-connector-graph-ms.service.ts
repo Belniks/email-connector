@@ -77,18 +77,22 @@ export class EmailConnectorGraphMsService {
   async listenForNewEmails({
     email,
     notificationUrl,
+    expirationDateTime,
   }: {
     email: string;
     notificationUrl: string;
+    expirationDateTime?: Date;
   }): Promise<Subscription> {
     try {
       const subscription = (await this.client.api('/subscriptions').post({
         changeType: 'created',
         notificationUrl: notificationUrl,
         resource: `/users/${email}/messages`,
-        expirationDateTime: new Date(
-          new Date().getTime() + 60 * 60 * 1000, // 1 hour
-        ).toISOString(),
+        expirationDateTime:
+          expirationDateTime ??
+          new Date(
+            new Date().getTime() + 60 * 60 * 1000, // 1 hour
+          ).toISOString(),
         latestSupportedTlsVersion: 'v1_2',
         clientState: this.options.graphMS.clientState,
       })) as Subscription;

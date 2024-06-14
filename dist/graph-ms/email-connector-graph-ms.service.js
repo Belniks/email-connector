@@ -58,13 +58,14 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             },
         });
     }
-    async listenForNewEmails({ email, notificationUrl, }) {
+    async listenForNewEmails({ email, notificationUrl, expirationDateTime, }) {
         try {
             const subscription = (await this.client.api('/subscriptions').post({
                 changeType: 'created',
                 notificationUrl: notificationUrl,
                 resource: `/users/${email}/messages`,
-                expirationDateTime: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
+                expirationDateTime: expirationDateTime ??
+                    new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
                 latestSupportedTlsVersion: 'v1_2',
                 clientState: this.options.graphMS.clientState,
             }));

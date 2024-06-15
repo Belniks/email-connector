@@ -131,6 +131,33 @@ export class EmailConnectorGraphMsService {
     }
   }
 
+  async deleteSubscription({
+    subscriptionId,
+  }: {
+    subscriptionId: string;
+  }): Promise<boolean> {
+    try {
+      await this.client.api(`/subscriptions/${subscriptionId}`).delete();
+
+      this.logger.log(`Subscription deleted: ${subscriptionId}`);
+      return true;
+    } catch (error) {
+      this.logger.error(`Error deleting subscription: ${error}`);
+      return false;
+    }
+  }
+
+  async getAllSubscriptions(): Promise<Subscription[]> {
+    try {
+      const response = await this.client.api('/subscriptions').get();
+
+      return response.value as Subscription[];
+    } catch (error) {
+      this.logger.error(`Error fetching subscriptions: ${error}`);
+      return [];
+    }
+  }
+
   async getMessagesByEmail({
     email,
     options,

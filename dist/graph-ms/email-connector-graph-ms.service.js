@@ -90,6 +90,27 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             this.logger.error(`Error updating subscription: ${error}`);
         }
     }
+    async deleteSubscription({ subscriptionId, }) {
+        try {
+            await this.client.api(`/subscriptions/${subscriptionId}`).delete();
+            this.logger.log(`Subscription deleted: ${subscriptionId}`);
+            return true;
+        }
+        catch (error) {
+            this.logger.error(`Error deleting subscription: ${error}`);
+            return false;
+        }
+    }
+    async getAllSubscriptions() {
+        try {
+            const response = await this.client.api('/subscriptions').get();
+            return response.value;
+        }
+        catch (error) {
+            this.logger.error(`Error fetching subscriptions: ${error}`);
+            return [];
+        }
+    }
     async getMessagesByEmail({ email, options, }) {
         const { filter, orderBy, select, skip = 1, top = 10 } = options;
         try {

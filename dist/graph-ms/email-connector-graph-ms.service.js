@@ -64,7 +64,7 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
                 changeType: 'created',
                 notificationUrl: notificationUrl,
                 resource: `/users/${email}/messages`,
-                expirationDateTime: expirationDateTime ??
+                expirationDateTime: expirationDateTime.toISOString() ??
                     new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
                 latestSupportedTlsVersion: 'v1_2',
                 clientState: this.options.graphMS.clientState,

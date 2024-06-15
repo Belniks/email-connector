@@ -89,7 +89,7 @@ export class EmailConnectorGraphMsService {
         notificationUrl: notificationUrl,
         resource: `/users/${email}/messages`,
         expirationDateTime:
-          expirationDateTime ??
+          expirationDateTime.toISOString() ??
           new Date(
             new Date().getTime() + 60 * 60 * 1000, // 1 hour
           ).toISOString(),

@@ -37,6 +37,7 @@ exports.MessageMapper = {
             sentDateTime: new Date(message.sentDateTime),
             bodyPreview: message.bodyPreview,
             conversationId: message.conversationId,
+            conversationIndex: message.conversationIndex,
             isDraft: message.isDraft,
             webLink: message.webLink,
             changeKey: message.changeKey,

@@ -25,8 +25,8 @@ export const MessageMapper = {
       inferenceClassification: message.inferenceClassification,
       internetMessageHeaders: message.internetMessageHeaders
         ? InternetMessageHeadersMapper.fromGraphArray(
-            message.internetMessageHeaders,
-          )
+          message.internetMessageHeaders,
+        )
         : [],
       lastModifiedDateTime: new Date(message.lastModifiedDateTime),
       parentFolderId: message.parentFolderId,
@@ -40,6 +40,7 @@ export const MessageMapper = {
       bodyPreview: message.bodyPreview,
       // categories: message.categories,
       conversationId: message.conversationId,
+      conversationIndex: message.conversationIndex,
       isDraft: message.isDraft,
       // isReadReceiptRequested: message.isReadReceiptRequested,
       webLink: message.webLink,

@@ -36,7 +36,7 @@ export interface Message {
    */
   conversationId: string;
 
-  // conversationIndex: Edm.Binary;
+  conversationIndex: string;
 
   /**
    * The date and time the message was created.

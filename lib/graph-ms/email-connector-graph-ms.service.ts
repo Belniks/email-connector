@@ -256,4 +256,95 @@ export class EmailConnectorGraphMsService {
       this.logger.error('Error fetching attachment:', error);
     }
   }
+
+  async forwardEmail({
+    email,
+    messageId,
+    to,
+    comment,
+  }: {
+    email: string;
+    messageId: string;
+    to: string[];
+    comment?: string;
+  }): Promise<boolean> {
+    try {
+      await this.client
+        .api(`/users/${email}/messages/${messageId}/forward`)
+        .post({
+          toRecipients: to.map((email) => ({ emailAddress: { address: email } })),
+          comment: comment,
+        });
+
+      return true;
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error forwarding email:', error);
+      return false;
+    }
+  }
+
+  async replyEmail({
+    email,
+    messageId,
+    comment,
+  }: {
+    email: string;
+    messageId: string;
+    comment: string;
+  }): Promise<boolean> {
+    try {
+      await this.client
+        .api(`/users/${email}/messages/${messageId}/reply`)
+        .post({
+          comment: comment,
+        });
+
+      return true;
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error replying email:', error);
+      return false;
+    }
+  }
+
+  async sendEmail({
+    email,
+    to,
+    subject,
+    body,
+  }: {
+    email: string;
+    to: string[];
+    subject: string;
+    body: string;
+  }): Promise<boolean> {
+    try {
+      await this.client.api(`/users/${email}/sendMail`).post({
+        message: {
+          subject: subject,
+          body: {
+            contentType: 'html',
+            content: body,
+          },
+          toRecipients: to.map((email) => ({ emailAddress: { address: email } })),
+        },
+      });
+
+      return true;
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error sending email:', error);
+      return false;
+    }
+  }
 }

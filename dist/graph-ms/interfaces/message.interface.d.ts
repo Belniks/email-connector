@@ -11,6 +11,7 @@ export interface Message {
     ccRecipients: Recipient[];
     changeKey: string;
     conversationId: string;
+    conversationIndex: string;
     createdDateTime: Date;
     flag: Flag;
     from: Recipient;

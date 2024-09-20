@@ -38,4 +38,25 @@ export declare class EmailConnectorGraphMsService {
         messageId: string;
         attachmentId: string;
     }): Promise<Attachment>;
+    forwardEmail({ email, messageId, to, comment, }: {
+        email: string;
+        messageId: string;
+        to: string;
+        comment?: string;
+    }): Promise<boolean>;
+    replyEmail({ email, messageId, comment, }: {
+        email: string;
+        messageId: string;
+        comment: string;
+    }): Promise<boolean>;
+    replyAllEmail({ email, messageId, comment, }: {
+        email: string;
+        messageId: string;
+        comment: string;
+    }): Promise<boolean>;
+    sendEmail({ email, message, }: {
+        email: string;
+        message: Message;
+    }): Promise<boolean>;
+
 }

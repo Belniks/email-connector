@@ -314,6 +314,33 @@ export class EmailConnectorGraphMsService {
     }
   }
 
+  async replyAllEmail({
+    email,
+    messageId,
+    comment,
+  }: {
+    email: string;
+    messageId: string;
+    comment: string;
+  }): Promise<boolean> {
+    try {
+      await this.client
+        .api(`/users/${email}/messages/${messageId}/replyAll`)
+        .post({
+          comment: comment,
+        });
+
+      return true;
+    } catch (error) {
+      if (!(error instanceof GraphClientError)) {
+        throw error;
+      }
+
+      this.logger.error('Error replying all email:', error);
+      return false;
+    }
+  }
+
   async sendEmail({
     email,
     to,

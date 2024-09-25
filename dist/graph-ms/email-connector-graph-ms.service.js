@@ -63,7 +63,7 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             const subscription = (await this.client.api('/subscriptions').post({
                 changeType: 'created',
                 notificationUrl: notificationUrl,
-                resource: `/users/${email}/messages`,
+                resource: `/users/${email}/mailFolders('Inbox')/messages`,
                 expirationDateTime: expirationDateTime.toISOString() ??
                     new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
                 latestSupportedTlsVersion: 'v1_2',

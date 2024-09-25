@@ -87,7 +87,7 @@ export class EmailConnectorGraphMsService {
       const subscription = (await this.client.api('/subscriptions').post({
         changeType: 'created',
         notificationUrl: notificationUrl,
-        resource: `/users/${email}/messages`,
+        resource: `/users/${email}/mailFolders('Inbox')/messages`,
         expirationDateTime:
           expirationDateTime.toISOString() ??
           new Date(

@@ -41,7 +41,7 @@ export declare class EmailConnectorGraphMsService {
     forwardEmail({ email, messageId, to, comment, }: {
         email: string;
         messageId: string;
-        to: string;
+        to: string[];
         comment?: string;
     }): Promise<boolean>;
     replyEmail({ email, messageId, comment, }: {
@@ -54,9 +54,10 @@ export declare class EmailConnectorGraphMsService {
         messageId: string;
         comment: string;
     }): Promise<boolean>;
-    sendEmail({ email, message, }: {
+    sendEmail({ email, to, subject, body, }: {
         email: string;
-        message: Message;
+        to: string[];
+        subject: string;
+        body: string;
     }): Promise<boolean>;
-
 }

@@ -81,8 +81,8 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             const subscription = (await this.client
                 .api(`/subscriptions/${subscriptionId}`)
                 .patch({
-                    expirationDateTime: expirationDateTime.toISOString(),
-                }));
+                expirationDateTime: expirationDateTime.toISOString(),
+            }));
             this.logger.log(`Subscription updated: ${subscription.id}`);
             return subscription;
         }
@@ -170,73 +170,80 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             this.logger.error('Error fetching attachment:', error);
         }
     }
-
-    async forwardEmail({ email, messageId, to, comment }) {
+    async forwardEmail({ email, messageId, to, comment, }) {
         try {
-            const response = await this.client
+            await this.client
                 .api(`/users/${email}/messages/${messageId}/forward`)
                 .post({
-                    toRecipients: to,
-                    comment: comment,
-                });
-            return response;
-        } catch (error) {
+                toRecipients: to.map((email) => ({ emailAddress: { address: email } })),
+                comment: comment,
+            });
+            return true;
+        }
+        catch (error) {
             if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
                 throw error;
             }
             this.logger.error('Error forwarding email:', error);
+            return false;
         }
     }
-
-    async replyEmail({ email, messageId, comment }) {
+    async replyEmail({ email, messageId, comment, }) {
         try {
-            const response = await this.client
+            await this.client
                 .api(`/users/${email}/messages/${messageId}/reply`)
                 .post({
-                    comment: comment,
-                });
-            return response;
-        } catch (error) {
+                comment: comment,
+            });
+            return true;
+        }
+        catch (error) {
             if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
                 throw error;
             }
             this.logger.error('Error replying email:', error);
+            return false;
         }
     }
-
-    async replyAllEmail({ email, messageId, comment }) {
+    async replyAllEmail({ email, messageId, comment, }) {
         try {
-            const response = await this.client
+            await this.client
                 .api(`/users/${email}/messages/${messageId}/replyAll`)
                 .post({
-                    comment: comment,
-                });
-            return response;
-        } catch (error) {
+                comment: comment,
+            });
+            return true;
+        }
+        catch (error) {
             if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
                 throw error;
             }
             this.logger.error('Error replying all email:', error);
+            return false;
         }
     }
-
-    async sendEmail({ email, message }) {
+    async sendEmail({ email, to, subject, body, }) {
         try {
-            const response = await this.client
-                .api(`/users/${email}/sendMail`)
-                .post({
-                    message: message,
-                });
-            return response;
-        } catch (error) {
+            await this.client.api(`/users/${email}/sendMail`).post({
+                message: {
+                    subject: subject,
+                    body: {
+                        contentType: 'html',
+                        content: body,
+                    },
+                    toRecipients: to.map((email) => ({ emailAddress: { address: email } })),
+                },
+            });
+            return true;
+        }
+        catch (error) {
             if (!(error instanceof microsoft_graph_client_1.GraphClientError)) {
                 throw error;
             }
             this.logger.error('Error sending email:', error);
+            return false;
         }
     }
-
-
 };
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService;
 exports.EmailConnectorGraphMsService = EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = __decorate([

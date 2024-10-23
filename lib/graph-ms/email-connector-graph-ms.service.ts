@@ -74,6 +74,25 @@ export class EmailConnectorGraphMsService {
     });
   }
 
+  async getEmailsIdsLast24Hours({ email }: { email: string }): Promise<string[]> {
+    try {
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const filter = `receivedDateTime ge ${yesterday.toISOString()}`;
+
+      const messages = await this.client
+        .api(`/users/${email}/messages`)
+        .filter(filter)
+        .select('id')
+        .get();
+
+      return messages.value.map((message) => message.id);
+    } catch (error) {
+      this.logger.error(`Error fetching email IDs for the last 24 hours: ${error}`);
+      return [];
+    }
+  }
+
   async listenForNewEmails({
     email,
     notificationUrl,

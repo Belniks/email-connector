@@ -132,7 +132,7 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
         const { filter, orderBy, select, skip = 1, top = 10 } = options;
         try {
             const messages = await this.client
-                .api(`/users/${email}/messages`)
+                .api(`/users/${email}/mailFolders('Inbox')/messages`)
                 .top(top)
                 .skip(skip)
                 .get();

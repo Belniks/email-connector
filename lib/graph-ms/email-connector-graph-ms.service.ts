@@ -81,7 +81,7 @@ export class EmailConnectorGraphMsService {
       const filter = `receivedDateTime ge ${yesterday.toISOString()}`;
 
       const messages = await this.client
-        .api(`/users/${email}/messages`)
+        .api(`/users/${email}/mailFolders('Inbox')/messages`)
         .filter(filter)
         .select('id')
         .get();
@@ -188,10 +188,7 @@ export class EmailConnectorGraphMsService {
 
     try {
       const messages = await this.client
-        .api(`/users/${email}/messages`)
-        // .filter(filter)
-        // .orderby(orderBy)
-        // .select(select)
+        .api(`/users/${email}/mailFolders('Inbox')/messages`)
         .top(top)
         .skip(skip)
         .get();

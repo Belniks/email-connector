@@ -64,7 +64,7 @@ let EmailConnectorGraphMsService = EmailConnectorGraphMsService_1 = class EmailC
             const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
             const filter = `receivedDateTime ge ${yesterday.toISOString()}`;
             const messages = await this.client
-                .api(`/users/${email}/messages`)
+                .api(`/users/${email}/mailFolders('Inbox')/messages`)
                 .filter(filter)
                 .select('id')
                 .get();
